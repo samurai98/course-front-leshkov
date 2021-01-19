@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react'
+import './App.css'
+import 'antd/dist/antd.css'
+import {Layout, Breadcrumb} from 'antd'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import logo from './assets/images/code.png'
+import AppMenu from './components/AppMenu'
+import AppHeader from './components/AppHeader'
+import {Route} from 'react-router-dom'
+import Login from './components/Login'
+
+const {Content, Footer, Sider} = Layout;
+
+
+const App = () => {
+    const [collapsed, setCollapsed] = useState<boolean>(false)
+    const logoStyle = collapsed ? 'logo-collapsed' : 'logo'
+
+    const onCollapse = (collapsed: boolean) => {
+        setCollapsed(collapsed)
+    }
+
+    return (
+        <Layout style={{minHeight: '100vh'}}>
+            <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+                <div className={"logo-wrapper"}>
+                    <img src={logo} alt="logo" className={logoStyle}/>
+                </div>
+                <AppMenu/>
+            </Sider>
+            <Layout className="site-layout">
+                <AppHeader/>
+                <Content style={{margin: '0 16px'}}>
+                    <Breadcrumb style={{margin: '16px 0'}}>
+                        <Breadcrumb.Item>User</Breadcrumb.Item>
+                        <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                    </Breadcrumb>
+                    <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+                        <Route exact path={'/login'} component={Login}/>
+                    </div>
+                </Content>
+                <Footer style={{textAlign: 'center'}}>Инструментальные средства поддержки обучения программированию
+                    ©2021 Created by Vladislav Leshkov</Footer>
+            </Layout>
+        </Layout>
+    );
 }
 
 export default App;
